@@ -1,0 +1,30 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-c",
+      "-Iinclude",
+      "-o",
+      "obj/main.o",
+      "src/main.c"
+    ],
+    "directory": "/Users/rob/playground/c/zero2hero/mm",
+    "file": "/Users/rob/playground/c/zero2hero/mm/src/main.c",
+    "output": "/Users/rob/playground/c/zero2hero/mm/obj/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-c",
+      "-Iinclude",
+      "-o",
+      "obj/my_lib.o",
+      "src/my_lib.c"
+    ],
+    "directory": "/Users/rob/playground/c/zero2hero/mm",
+    "file": "/Users/rob/playground/c/zero2hero/mm/src/my_lib.c",
+    "output": "/Users/rob/playground/c/zero2hero/mm/obj/my_lib.o"
+  }
+]

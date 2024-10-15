@@ -1,0 +1,44 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-c",
+      "-Iinclude",
+      "-o",
+      "obj/file.o",
+      "src/file.c"
+    ],
+    "directory": "/Users/rob/playground/c/zero2hero/empdb",
+    "file": "/Users/rob/playground/c/zero2hero/empdb/src/file.c",
+    "output": "/Users/rob/playground/c/zero2hero/empdb/obj/file.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-c",
+      "-Iinclude",
+      "-o",
+      "obj/main.o",
+      "src/main.c"
+    ],
+    "directory": "/Users/rob/playground/c/zero2hero/empdb",
+    "file": "/Users/rob/playground/c/zero2hero/empdb/src/main.c",
+    "output": "/Users/rob/playground/c/zero2hero/empdb/obj/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-c",
+      "-Iinclude",
+      "-o",
+      "obj/parse.o",
+      "src/parse.c"
+    ],
+    "directory": "/Users/rob/playground/c/zero2hero/empdb",
+    "file": "/Users/rob/playground/c/zero2hero/empdb/src/parse.c",
+    "output": "/Users/rob/playground/c/zero2hero/empdb/obj/parse.o"
+  }
+]

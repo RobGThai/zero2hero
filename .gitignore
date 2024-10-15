@@ -1,0 +1,7 @@
+*.db
+*.so
+*.dylib
+
+**/bin/**
+**/obj/**
+**/.cache/**
