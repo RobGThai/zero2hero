@@ -18,6 +18,7 @@ struct employee_t {
 
 int add_employee(struct dbheader_t *header, struct employee_t *employees, char *addRecord);
 int del_employee(struct dbheader_t *header, struct employee_t *employees, char *delName);
+int search_employee(int fd, struct dbheader_t *header, char *name, struct employee_t **employeesOut);
 int create_db_header(int fd, struct dbheader_t **headerOut);
 int validate_db_header(int fd, struct dbheader_t **headerOut);
 int list_employees(struct dbheader_t *header, struct employee_t *employees);

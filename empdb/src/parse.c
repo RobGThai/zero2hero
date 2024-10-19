@@ -38,6 +38,76 @@ int add_employee(struct dbheader_t *header, struct employee_t *employees, char *
   return STATUS_SUCCESS;
 }
 
+/*
+ * Searching for employee from DB. This is a practice of cursor manipulation so it hit the disks constantly.
+ * Smarter solution would be sizing the document to nicely fit memory so we can read the whole file to check data.
+*/
+int search_employee(int fd, struct dbheader_t *header, char *name, struct employee_t **employeesOut) {
+  char lookingName[256];
+  struct employee_t *emp = malloc(sizeof(struct employee_t));
+  if(fd < 0) {
+    printf("Invalid FD for searching\n");
+    return STATUS_ERROR;
+  }
+
+  //TODO read through names
+  // Move to the start of the next struct
+  // Readt char[256]
+  int NAMESIZE = 256;
+  // Default cursor to move pass header section.
+  int cursor = sizeof(struct dbheader_t);
+
+  do {
+    printf("Seek cursor to the next employee.\n");
+    lseek(fd, cursor, SEEK_SET);
+
+    printf("Attempting to read name\n");
+    if(read(fd, &lookingName, NAMESIZE) != NAMESIZE) {
+      printf("Error reading name\n");
+      perror("read");
+      return STATUS_ERROR;
+    }
+    printf("Found name: %s\n", lookingName);
+
+    if(strcmp(lookingName, name) == 0) {
+      printf("Match found\n");
+      break;
+    }
+
+    // Move cursor to the next item
+    cursor += sizeof(struct employee_t);
+  } while(cursor < header->filesize);
+
+  if(cursor < header->filesize) {
+    // Practice using SEEK_CUR
+    // We could just use `cursor` and SEEK_SET to get the same thing.
+    printf("Setting cursor to the start of struct\n");
+    // lseek(fd, -1 * NAMESIZE, SEEK_CUR);
+    if (lseek(fd, cursor, SEEK_SET) == -1) {
+      printf("Setting cursor failed!!\n");
+      perror("lseek");
+      return STATUS_ERROR;
+    }
+
+    // Read employee into return variable
+    printf("Read employee.\n");
+    if(read(fd, emp, sizeof(struct employee_t)) != sizeof(struct employee_t)) {
+      printf("Error reading employee\n");
+      perror("read");
+      return STATUS_ERROR;
+    }
+
+    printf("Returning employee\n");
+    printf("Found emp: %s\n", emp->name);
+
+    *employeesOut = emp;
+
+    return STATUS_SUCCESS;
+  }
+
+  return STATUS_ERROR; 
+}
+
 int del_employee(struct dbheader_t *header, struct employee_t *employees, char *delName) {
   // Find matching record
   // Delete record from collection

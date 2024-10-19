@@ -7,8 +7,7 @@ OBJ = $(patsubst src/%.c,obj/%.o, $(SRC))
 
 default: $(TARGET)
 	@echo "TODO:"
-	@echo "- Search by name"
-	@echo "- Delete"
+	@echo "ALL DONE :-)"
 
 feed:
 	./$(TARGET) -f ./mynewdb.db -a "Gof 1, 12/105 xxaa, 80"

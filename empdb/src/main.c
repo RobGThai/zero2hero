@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "common.h"
 #include "file.h"
@@ -14,12 +15,14 @@ void print_usage(char *argv[]) {
   printf("\t -n  - Create new database file\n");
   printf("\t -f <database file> - (required) Path to database file\n");
   printf("\t -l  - List employee in database.\n");
+  printf("\t -s <name> - Search for name in database\n");
 }
 
 int main(int argc, char *argv[]) {
   char *filepath = NULL;
   char *addRecord = NULL;
   char *delName = NULL;
+  char *searchName = NULL;
   bool newfile = false;
   bool list = false;
   int c;
@@ -27,7 +30,7 @@ int main(int argc, char *argv[]) {
   struct dbheader_t *header = NULL;
   struct employee_t *employees = NULL;
 
-  while ((c = getopt(argc, argv, "nlf:a:d:")) != -1) {
+  while ((c = getopt(argc, argv, "nlf:a:d:s:")) != -1) {
     switch (c) {
     case 'a':
       addRecord = optarg;
@@ -44,6 +47,10 @@ int main(int argc, char *argv[]) {
     case 'l':
       list = true;
       break;
+    case 's':
+      searchName = optarg;
+      break;
+
     case '?':
       printf("Unknown option -%c\n", c);
       break;
@@ -84,6 +91,19 @@ int main(int argc, char *argv[]) {
 
   printf("Newfile: %d\n", newfile);
   printf("Filepath: %s\n", filepath);
+
+  if(searchName) {
+    if(search_employee(dbfd, header, searchName, &employees) == STATUS_ERROR) {
+      return STATUS_ERROR;
+    }
+    struct employee_t emp = *employees;
+    printf("Employee: \n");
+    printf("\tName: %s\n", emp.name);
+    printf("\tAddress: %s\n", emp.address);
+    printf("\tHours: %d\n", emp.hours);
+
+    return STATUS_SUCCESS;
+  }
 
   if (read_employees(dbfd, header, &employees) != STATUS_SUCCESS) {
     printf("Read employees failed\n");
