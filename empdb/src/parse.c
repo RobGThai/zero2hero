@@ -38,6 +38,35 @@ int add_employee(struct dbheader_t *header, struct employee_t *employees, char *
   return STATUS_SUCCESS;
 }
 
+int del_employee(struct dbheader_t *header, struct employee_t *employees, char *delName) {
+  // Find matching record
+  // Delete record from collection
+
+  int toDelete = -1;
+  int i = 0;
+  for(; i < header->count; i++) {
+    if(strcmp(employees[i].name, delName) == 0) {
+      // Found and prepare to delete
+      toDelete = i;
+      break;
+    }
+  }
+
+  if(toDelete == -1) {
+    return STATUS_ERROR;
+  }
+
+  header->count--;
+  // Deletion
+  if(toDelete < header->count) {
+    for(int i = toDelete; i < header->count; i++) {
+      employees[i] = employees[i + 1];
+    }
+  }
+
+  return STATUS_SUCCESS;
+}
+
 int create_db_header(int fd, struct dbheader_t **headerOut) {
   struct dbheader_t *header = calloc(1, sizeof(struct dbheader_t));
   if(header == NULL) { // Tutorial use == -1
@@ -111,6 +140,7 @@ void output_file(int fd, struct dbheader_t *header, struct employee_t *employees
   int totalRecord = header->count;
   header->filesize = sizeof(struct dbheader_t) + (totalRecord * sizeof(struct employee_t));
 
+  int totalSize = header->filesize;
   to_network_endian(header);
 
   printf("Reset cursor to the start\n");
@@ -125,6 +155,12 @@ void output_file(int fd, struct dbheader_t *header, struct employee_t *employees
   for(; i < totalRecord; i++) {
     employees[i].hours = htonl(employees[i].hours);
     write(fd, &employees[i], sizeof(struct employee_t));
+  }
+
+  // Truncate to remove extra data in case of deletion
+  // Could be optimize to only run on deletion
+  if(ftruncate(fd, totalSize) != 0) {
+    perror("ftruncate");
   }
 }
 
@@ -168,7 +204,7 @@ int validate_db_header(int fd, struct dbheader_t **headerOut) {
   fstat(fd, &dbstat);
 
   if(header->filesize != dbstat.st_size) {
-    printf("Corrupted database\n");
+    printf("Corrupted database: Expected[%d] Actual[%lld]\n", header->filesize, dbstat.st_size);
     free(header);
     return STATUS_ERROR;
   }

@@ -42,5 +42,3 @@ int open_db(char *filename) {
   return fd;
 }
 
-
-

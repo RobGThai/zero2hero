@@ -6,6 +6,16 @@ SRC = $(wildcard src/*.c)
 OBJ = $(patsubst src/%.c,obj/%.o, $(SRC))
 
 default: $(TARGET)
+	@echo "TODO:"
+	@echo "- Search by name"
+	@echo "- Delete"
+
+feed:
+	./$(TARGET) -f ./mynewdb.db -a "Gof 1, 12/105 xxaa, 80"
+	./$(TARGET) -f ./mynewdb.db -a "Gof 2, 12/105 xxaa, 80"
+	./$(TARGET) -f ./mynewdb.db -a "Gof 3, 12/105 xxaa, 80"
+	./$(TARGET) -f ./mynewdb.db -a "Gof 4, 12/105 xxaa, 80"
+	./$(TARGET) -f ./mynewdb.db -a "Gof 5, 12/105 xxaa, 80"
 
 add:
 	./$(TARGET) -f ./mynewdb.db -a "Timmy H.,123 Sheshire Ln.,120"
