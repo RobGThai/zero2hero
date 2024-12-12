@@ -16,7 +16,7 @@ struct employee_t {
   unsigned int hours;
 };
 
-int add_employee(struct dbheader_t *header, struct employee_t *employees, char *addRecord);
+int add_employee(struct dbheader_t *header, struct employee_t *employees, char *addstring);
 int del_employee(struct dbheader_t *header, struct employee_t *employees, char *delName);
 int search_employee(int fd, struct dbheader_t *header, char *name, struct employee_t **employeesOut);
 int create_db_header(int fd, struct dbheader_t **headerOut);
