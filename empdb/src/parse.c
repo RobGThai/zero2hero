@@ -10,6 +10,12 @@
 #include "parse.h"
 #include "common.h"
 
+#if defined(__APPLE__) || defined(__MACH__)
+  char debugLine[] = "Corrupted database: Expected[%d] Actual[%lld]\n";
+#else
+  char debugLine[] = "Corrupted database: Expected[%d] Actual[%ld]\n";
+#endif
+
 void to_host_endian(struct dbheader_t *header) {
   header->version = ntohs(header->version);
   header->count = ntohs(header->count);
@@ -274,7 +280,7 @@ int validate_db_header(int fd, struct dbheader_t **headerOut) {
   fstat(fd, &dbstat);
 
   if(header->filesize != dbstat.st_size) {
-    printf("Corrupted database: Expected[%d] Actual[%lld]\n", header->filesize, dbstat.st_size);
+    printf(debugLine, header->filesize, dbstat.st_size);
     free(header);
     return STATUS_ERROR;
   }
