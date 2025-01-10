@@ -135,5 +135,8 @@ int main(int argc, char *argv[]) {
     output_file(dbfd, header, employees);
   }
 
+  free(employees);
+  free(header);
+
   return 0;
 }
