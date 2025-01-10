@@ -24,6 +24,9 @@ new: default
 
 run: clean new 
 
+leak: run
+	valgrind --leak-check=full bin/dbview -f testdb.db -n
+
 
 # Understanding macro
 # https://stackoverflow.com/questions/3220277/what-do-the-makefile-symbols-and-mean
